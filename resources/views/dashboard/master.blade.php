@@ -23,6 +23,7 @@
         @yield('listadoCategorias')
         @yield('formularioCrearCategoria')
         @yield('formularioEditarCategoria')
+        @yield('content')
     </div>
 
     <script src="{{ asset('js/app.js') }}"></script>

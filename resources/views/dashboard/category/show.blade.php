@@ -14,5 +14,5 @@
                     <input readonly class="form-control" name="description" id="description" rows="10" value="{{ $category->description }}"/>
                 </div>
             </div> 
-            <a class="btn btn-success btn-sm" href="{{ route('categories') }}">Regresar</a>
+            <a class="btn btn-success btn-sm" href="{{ route('category.index') }}">Regresar</a>
 @endsection      

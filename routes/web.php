@@ -2,16 +2,19 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+//web controller no existe!
+//Route::get('/web', 'web/WebController@index')->name('web');
 
-Route::get('/', [HomeController::class, 'home'])->name('home');
+Route::get('/post', [App\Http\Controllers\HomeController::class, 'index'])->name('post.show');
+Route::resource('dashboard/category', CategoryController::class);
+Auth::routes();
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'home'])->name('index');
+Route::resource('dashboard/user', UserController::class);
 
-Route::get('/categories', [CategoryController::class, 'index'])->name('categories');
-Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
-Route::get('/categories/edit/{category}', [CategoryController::class, 'edit'])->name('categories.edit');
-
-Route::put('/categories/update/{category}', [CategoryController::class, 'update'])->name('categories.update');
-Route::delete('/categories/delete/{category}', [CategoryController::class, 'destroy'])->name('categories.destroy');
-
-Route::resource('/dashboard/category', CategoryController::class);
+// npm run dev
+?>

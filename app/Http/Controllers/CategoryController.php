@@ -7,6 +7,10 @@ use App\Models\CategoryModel;
 
 class CategoryController extends Controller{
 
+    public function __construct() {
+        $this->middleware(['auth', 'rol.publicista']);
+    }
+
     public function index() {
         $categorias= CategoryModel::all();
         return view('dashboard.category.index', ['categorias'=>$categorias]);
@@ -19,11 +23,18 @@ class CategoryController extends Controller{
 
     public function store(RequestCategory $request){
         // Crea la categoria en la base de datos
-        CategoryModel::create($request->validated());
+        $request->validated();
+        CategoryModel::create(
+            [
+                'name'=> $request['name'],
+                'description'=> $request['description'], 
+                'user'=> auth()->user()->email 
+            ]
+        );
         $categorias= CategoryModel::all();
+        //return response()->json($categorias, 200, []);
         return view('dashboard.category.index', ['categorias'=>$categorias]);
     }
-
 
     public function show(CategoryModel $category){
         // vista mostrar una categoria
@@ -31,22 +42,32 @@ class CategoryController extends Controller{
     }
 
     public function edit(CategoryModel $category){
+        // Se valida el rol del usuario y si es publicista se verifica si es autor de la categoria.
+        if(auth()->user()->rol_id==3){
+            $this->authorize('autor' ,$category);
+        }
         // vista formulario editar
         return view('dashboard.category.edit', ['category'=>$category]);
     }
 
     public function update(RequestCategory $request, CategoryModel $category){
         // edita en la base de datos
+        if(auth()->user()->rol_id==3){
+            $this->authorize('autor' ,$category);
+        }
         $category->name=$request->name;
         $category->description=$request->description;
         $request->validated();
         $category->save();
-       // return view('dashboard.category.show', ["category"=> $category]);
         return back()->with('status', 'Categoria actualizada con éxito');
     }
 
     public function destroy(CategoryModel $category){
+        if(auth()->user()->rol_id==3){
+            $this->authorize('autor' ,$category);
+        }
         $category->delete();
         return back()->with('status', 'Categoria eliminada!');
     }
+    // return response()->json($categorias, 200, []);
 }
