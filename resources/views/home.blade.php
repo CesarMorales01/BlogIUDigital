@@ -8,7 +8,7 @@
             @auth
                 Bienvenido al sistema {{ auth()->user()->name }}
                 <br>
-                Rol id : {{ auth()->user()->rol_id }}
+                {{ auth()->user()->rol->name }}
             @endauth
             <br><br>
             <div class="card">
@@ -25,7 +25,7 @@
                     <br><br>
                     <div style="text-align: center" class="row">
                         <div class="col-6">
-                            <a href="{{ route('post.show') }}" class="btn btn-success">Ir a publicaciones</a>
+                            <a href="{{ route('post.index') }}" class="btn btn-success">Ir a publicaciones</a>
                         </div>
                         @if (auth()->user()->rol_id==1)
                             <div class="col-6">

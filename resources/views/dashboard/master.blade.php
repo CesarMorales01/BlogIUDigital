@@ -19,10 +19,6 @@
              {{ session('status') }}   
         </div>
         @endif
-        @yield('listadoPublicaciones')
-        @yield('listadoCategorias')
-        @yield('formularioCrearCategoria')
-        @yield('formularioEditarCategoria')
         @yield('content')
     </div>
 

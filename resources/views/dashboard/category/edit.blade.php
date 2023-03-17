@@ -1,9 +1,9 @@
 @extends('dashboard.master')
-@section('formularioEditarCategoria')
+@section('content')
     @include('dashboard.partials.validation-error')
 
     <div class="container">
-        <h4 class="centrar">Editar categoria</h4>
+        <h4 style="margin-top: 0.5em" class="centrar">Editar categoria</h4>
         <form action="{{ route("category.update", $category) }}" method="post">
             @method('put')
             @include('dashboard.category._form')

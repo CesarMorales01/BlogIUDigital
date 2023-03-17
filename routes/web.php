@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -9,12 +10,17 @@ use Illuminate\Support\Facades\Route;
 //web controller no existe!
 //Route::get('/web', 'web/WebController@index')->name('web');
 
-Route::get('/post', [App\Http\Controllers\HomeController::class, 'index'])->name('post.show');
 Route::resource('dashboard/category', CategoryController::class);
+Route::resource('dashboard/user', UserController::class);
+Route::resource('dashboard/post', PostController::class);
 Auth::routes();
+//Rutas para redireccionar despues de loguear
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'home'])->name('home');
 Route::get('/', [App\Http\Controllers\HomeController::class, 'home'])->name('index');
-Route::resource('dashboard/user', UserController::class);
+
+// Rutas con restriccion para rol invitado
+Route::get('/dashboard/post/create', [App\Http\Controllers\PostController::class, 'create'])->name('post.create')->middleware('rol.invitado');
+Route::get('/dashboard/post/edit/{post}', [App\Http\Controllers\PostController::class, 'edit'])->name('post.edit')->middleware('rol.invitado');
 
 // npm run dev
 ?>

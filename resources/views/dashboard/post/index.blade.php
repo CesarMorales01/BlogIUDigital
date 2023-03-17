@@ -1,38 +1,44 @@
 @extends('dashboard.master')
 @section('content')
     <div class="container">
-        <h4 class="centrar" style="margin-top: 0.5em">Listado de categorias</h4>
-        <a href="{{ route('category.create')}}" class="btn btn-success">Crear categoria</a>
+        <h4 class="centrar" style="margin-top: 0.5em">Publicaciones</h4>
+        @if (auth()->user()->id!=2)
+          <a href="{{ route('post.create')}}" class="btn btn-success">Crear publicación</a>
+        @endif
         <br><br>
         <table class="table table-striped">
             <thead>
               <tr>
                 <th scope="col">Id</th>
+                <th scope="col">Titulo</th>
                 <th scope="col">Categoria</th>
-                <th scope="col">Autor</th>
+                <th scope="col">Description</th>
                 <th scope="col">Creación</th>
                 <th scope="col">Actualización</th>
                 <th scope="col">Acciones</th>
               </tr>
             </thead>
             <tbody>
-                @foreach ($categorias as $categoria)
-                  <tr>
-                    <th scope="row">{{ $categoria->id }}</th>
-                    <td>{{ $categoria->name }}</td>
-                    <td>{{ $categoria->user }}</td>
-                    <td>{{ $categoria->created_at }}</td>
-                    <td>{{ $categoria->updated_at }}</td>
+                @foreach ($posts as $item)
+                    <tr>
+                    <th scope="row">{{ $item->id }}</th>
+                    <td>{{ $item->name }}</td>
+                    <td>{{ $item->category->name }}</td>
+                    <td>{{ $item->description }}</td>
+                    <td>{{ $item->created_at }}</td>
+                    <td>{{ $item->updated_at }}</td>
                     <td>
-                        <a href="{{ route('category.show', $categoria)}}" class="btn btn-primary">Ver</a>
-                        <a href="{{ route('category.edit', $categoria)}}" class="btn btn-primary">Editar</a>
-                        <button data-toggle="modal" data-target="#deleteModal"  data-id="{{ $categoria->id }}" class="btn btn-outline-danger">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
-                            </svg>
-                        </button>
-                    </td>
-                  </tr>  
+                        <a href="{{ route('post.show', $item)}}" class="btn btn-primary">Ver</a>
+                        @if (auth()->user()->id!=2)
+                          <a href="{{ route('post.edit', $item) }}" class="btn btn-primary">Editar</a>
+                          <button data-toggle="modal" data-target="#deleteModal"  data-id="{{ $item->id }}" class="btn btn-outline-danger">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                  <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                              </svg>
+                          </button>
+                        @endif
+                    </td> 
+                    </tr>  
                 @endforeach
             </tbody>
           </table>
@@ -52,7 +58,7 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   
-                  <form id="formDelete" method="POST" action="{{ route('category.destroy', 0) }}" data-action="{{ route('category.destroy', 0) }}">
+                  <form id="formDelete" method="POST" action="{{ route('post.destroy', 0) }}" data-action="{{ route('post.destroy', 0) }}">
                     @method('DELETE')
                     @csrf
                     <button type="submit" class="btn btn-danger">Borrar</button>
@@ -71,7 +77,7 @@
                 action= $('#formDelete').attr('data-action').slice(0, -1)
                 action +=id
                 $('#formDelete').attr('action', action)
-                var title= $('#modalTitle').text('Vas a borrar la categoria con id '+id)
+                var title= $('#modalTitle').text('Vas a borrar la publicación con id '+id)
                 });
               }) 
 

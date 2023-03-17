@@ -1,6 +1,6 @@
 @extends('dashboard.master')
-@section('formularioCrearCategoria')
-    <h4 class="centrar">Categoria</h4>
+@section('content')
+    <h4 style="margin-top: 0.5em" class="centrar">Categoria</h4>
         <div class="row">
            <div class="form-group">
                <label for="title">Nombre categoria</label>
