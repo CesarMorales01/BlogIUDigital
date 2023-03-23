@@ -22,6 +22,6 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'home'])->name('ind
 // Rutas con restriccion para rol invitado
 Route::get('/dashboard/post/create', [App\Http\Controllers\PostController::class, 'create'])->name('post.create')->middleware('rol.invitado');
 Route::get('/dashboard/post/edit/{post}', [App\Http\Controllers\PostController::class, 'edit'])->name('post.edit')->middleware('rol.invitado');
-
+//https://github.com/CesarMorales01/BlogIUDigital.git
 // npm run dev
 ?>
