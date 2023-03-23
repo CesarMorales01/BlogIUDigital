@@ -35,6 +35,5 @@ class DatabaseSeeder extends Seeder{
         $rol2->name = 'Rol publicista';
         $rol2->description='Restricción en edición y eliminación de categorias no propias';
         $rol2->save();
-        
     }
 }
