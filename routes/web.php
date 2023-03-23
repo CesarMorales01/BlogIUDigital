@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 
 //web controller no existe!
 //Route::get('/web', 'web/WebController@index')->name('web');
+//Route::middleware('auth')->group(function(){});
 
 Route::resource('dashboard/category', CategoryController::class);
 Route::resource('dashboard/user', UserController::class);
