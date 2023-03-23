@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder{
          */
         $rol = new RolModel();
         $rol->clave = 'admin';
-        $rol->name = 'Rol adminmistrador';
+        $rol->name = 'Rol administrador';
         $rol->description='Tiene acceso a todas las funciones';
         $rol->save();
 
