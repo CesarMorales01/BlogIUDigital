@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUserPut;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -21,14 +22,15 @@ class UserController extends Controller{
         return view('dashboard.user.create', ['user'=> new User()]);
     }
 
-    public function store(Request $request) {
+    public function store(UpdateUserPut $request) {
+        // No me permite crear nuevo usuario estando logueado....
         User::create(
             [
                 'name'=> $request['name'],
                 'surname'=> $request['surname'],
                 'rol_id'=> $request['rol_id'],
                 'email'=> $request['email'],
-                'password'=> Hash::make($request['name'])
+                'password'=> Hash::make($request['password'])
             ]
         );
         return back()->with('status', 'Usuario creado con exito.');

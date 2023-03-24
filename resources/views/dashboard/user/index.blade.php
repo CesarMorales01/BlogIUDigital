@@ -3,7 +3,9 @@
     <div class="row justify-content.center">
         <div class="container table-responsive">
         <h4 class="centrar" style="margin-top: 0.5em">Lista de usuarios</h4>
-        <br><br>
+        <br>
+        <a href="{{ route('user.create')}}" class="btn btn-success">Registrar usuario</a>
+        <br> <br>
         <table class="table table-hover">
             <thead class="thead-dark">
               <tr>
@@ -79,6 +81,7 @@
                 });
               }) 
 
+            
             </script>
           @endpush
     </div>  
