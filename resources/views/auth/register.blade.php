@@ -95,7 +95,7 @@
 
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button onclick="validarValorSelect()" type="button" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary">
                                     {{ __('Register') }}
                                 </button>
                             </div>
@@ -106,18 +106,20 @@
         </div>
     </div>
 </div>
-<script>
-function validarValorSelect(){
-    const valorSelect = document.getElementById('rol').value
-    if(valorSelect=='Elija una opción'){
-        document.getElementById('rol').style.backgroundColor='red';
-        setTimeout(() => {
-            document.getElementById('rol').style.backgroundColor=''; 
-        }, 1000);
-    }else{
-        document.getElementById('formRegistrar').submit()
-    }
-}
-</script>
+@push('script')
+    <script>
+        function validarValorSelect(){
+            const valorSelect = document.getElementById('rol').value
+            if(valorSelect=='Elija una opción'){
+                document.getElementById('rol').style.backgroundColor='red';
+                setTimeout(() => {
+                    document.getElementById('rol').style.backgroundColor=''; 
+                }, 1000);
+            }else{
+                document.getElementById('formRegistrar').submit()
+            }
+        }
+    </script>
+@endpush
 @endsection
 

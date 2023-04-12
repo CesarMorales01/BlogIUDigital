@@ -27,6 +27,20 @@
     </div>
 </div> 
 @endif
+
+
+<div class="row">
+    <div class="form-group">
+        <label for="rol">Asignar Rol</label>
+        <br>
+        <select name="role" class="form-select" >
+            @foreach ($roles as $role)
+                <option {{$role->name == $user->getRoleNames()->first() ? 'selected' : '' }} value={{ $role->id }}>{{ $role->name }}</option>
+            @endforeach
+        </select>
+    </div>
+</div>
+
 <div class="col s6">
     <a class="btn btn-danger btn-sm"  href="{{ route('user.index')}}">Regresar</a>
     <input type="submit" value="Enviar" class="btn btn-success btn-sm">

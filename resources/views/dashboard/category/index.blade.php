@@ -2,8 +2,10 @@
 @section('content')
     <div class="container">
         <h4 class="centrar" style="margin-top: 0.5em">Listado de categorias</h4>
-        <a href="{{ route('category.create')}}" class="btn btn-success">Crear categoria</a>
-        <br><br>
+        @can('crear-categorias')
+          <a href="{{ route('category.create')}}" class="btn btn-success">Crear categoria</a>
+          <br><br>
+        @endcan
         <table class="table table-striped">
             <thead>
               <tr>
@@ -24,13 +26,17 @@
                     <td>{{ $categoria->created_at }}</td>
                     <td>{{ $categoria->updated_at }}</td>
                     <td>
-                        <a href="{{ route('category.show', $categoria)}}" class="btn btn-primary">Ver</a>
-                        <a href="{{ route('category.edit', $categoria)}}" class="btn btn-primary">Editar</a>
-                        <button data-toggle="modal" data-target="#deleteModal"  data-id="{{ $categoria->id }}" class="btn btn-outline-danger">
+                       <a href="{{ route('category.show', $categoria)}}" class="btn btn-primary">Ver</a>
+                        @can('editar-categorias')
+                          <a href="{{ route('category.edit', $categoria)}}" class="btn btn-primary">Editar</a>
+                        @endcan
+                        @can('eliminar-categorias')
+                          <button data-toggle="modal" data-target="#deleteModal"  data-id="{{ $categoria->id }}" class="btn btn-outline-danger">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
                                 <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
                             </svg>
-                        </button>
+                          </button>
+                        @endcan  
                     </td>
                   </tr>  
                 @endforeach

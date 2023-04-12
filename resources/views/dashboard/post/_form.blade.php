@@ -9,7 +9,7 @@
         <label for="category">Categoria</label>
         <br>
         <select class="form-select" id="category_id" name="category_id" required  aria-label="Default select example">
-            <option selected>Elija una opción</option>
+            <option selected>Elija una opcion</option>
             @foreach ($categories as $item)
                 <option 
                 @if ($ifCategorySelected>=1)

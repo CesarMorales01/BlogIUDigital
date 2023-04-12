@@ -10,9 +10,7 @@
     <title>Módulo admin</title>
 </head>
 <body>
-
-    @include('dashboard.partials.nav-header-main')
-
+    @include('nav-header-main')
     <div class="container section">
         @if (session('status'))
         <div class="alert alert-primary">

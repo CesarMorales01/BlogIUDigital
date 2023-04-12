@@ -4,8 +4,11 @@
         <div class="container table-responsive">
         <h4 class="centrar" style="margin-top: 0.5em">Lista de usuarios</h4>
         <br>
-        <a href="{{ route('user.create')}}" class="btn btn-success">Registrar usuario</a>
-        <br> <br>
+        @can('crear-usuarios')
+          <a href="{{ route('user.create')}}" class="btn btn-success">Registrar usuario</a>
+           <br>
+        @endcan
+        <br> 
         <table class="table table-hover">
             <thead class="thead-dark">
               <tr>
@@ -19,6 +22,7 @@
                 <th scope="col">Acciones</th>
               </tr>
             </thead>
+              
             <tbody>
                 @foreach ($users as $item)
                   <tr>
@@ -26,17 +30,20 @@
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->surname }}</td>
                     <td>{{ $item->email }}</td>
-                    <td>{{ $item->rol->clave }}</td>
+                    <td>{{ $item->getRoleNames()->first() }}</td>
                     <td>{{ $item->created_at->format('d-m-Y') }}</td>
                     <td>{{ $item->updated_at->format('d-m-Y') }}</td>
                     <td> 
-                      <a href="{{ route('user.show', $item->id)}}" class="btn btn-primary">Ver</a>
-                      <a href="{{ route('user.edit', $item->id)}}" class="btn btn-primary">Editar</a>
+                       @can('editar-usuarios')
+                        <a href="{{ route('user.edit', $item->id)}}" class="btn btn-primary">Editar</a>
+                       @endcan
+                       @can('eliminar-usuarios')
                         <button data-toggle="modal" data-target="#deleteModal"  data-id="{{ $item->id }}" class="btn btn-outline-danger">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
-                            </svg>
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                              <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                          </svg>
                         </button>
+                       @endcan 
                     </td>
                   </tr>  
                 @endforeach

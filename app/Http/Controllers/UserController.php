@@ -2,15 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UpdateUserPut;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use App\Http\Requests\UserRequest;
 
 class UserController extends Controller{
 
     public function __construct() {
-        $this->middleware(['auth', 'rol.admin']);
+        $this->middleware(['auth']);
+        $this->middleware(['permission:crear-usuarios'])->only('create', 'store');
+        $this->middleware(['permission:editar-usuarios'])->only('edit', 'update');
+        $this->middleware(['permission:eliminar-usuarios'])->only('destroy');
     }
     
     public function index(){
@@ -19,39 +24,52 @@ class UserController extends Controller{
     }
 
     public function create() {
-        return view('dashboard.user.create', ['user'=> new User()]);
+        $roles= Role::all();
+        return view('dashboard.user.create', ['user'=> new User(), 'roles'=>$roles]);
     }
 
-    public function store(UpdateUserPut $request) {
-        // No me permite crear nuevo usuario estando logueado....
-        User::create(
+    public function store(Request $request) {
+        $request->validate([
+            'password'=> 'required | min:6 | confirmed',
+            'email'=> 'required | string | email | max:255 | unique:users'
+        ]);
+        $user= User::create(
             [
                 'name'=> $request['name'],
                 'surname'=> $request['surname'],
-                'rol_id'=> $request['rol_id'],
                 'email'=> $request['email'],
                 'password'=> Hash::make($request['password'])
             ]
         );
-        return back()->with('status', 'Usuario creado con exito.');
+        $user->assignRole($request->role);
+        $users = User::all();
+        return view('dashboard.user.index', ['users'=> $users]);
     }
 
     public function show(User $user){
-        return view('dashboard.user.show', ['user'=>$user]);
+      return view('dashboard.user.show', ['user'=>$user]);
     }
 
     public function edit(User $user){
-        return view('dashboard.user.edit', ['user'=>$user]);
+        $roles= Role::all();
+        return view('dashboard.user.edit', ['user'=>$user, 'roles'=>$roles]);
     }
 
-    
     public function update(Request $request, User $user){
+        $request->validate([
+            'name'=> 'required | string | max:255',
+            'surname'=> 'required | string | max:255',
+            'email'=> 'required | string | email | max:255'
+        ]);
         $user->update([
             'name'=> $request['name'],
             'surname'=> $request['surname'],
-            'email'=> $request['email'],
+            'email'=> $request['email']
         ]);
-        return back()->with('status', 'Usuario actualizado con exito.');
+        $user->roles()->detach();
+        $user->assignRole($request['role']);
+        $users = User::all();
+        return view('dashboard.user.index', ['users'=> $users]);
     }
 
 

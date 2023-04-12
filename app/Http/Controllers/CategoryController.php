@@ -9,7 +9,10 @@ use Illuminate\Http\Request;
 class CategoryController extends Controller{
     
     public function __construct() {
-        $this->middleware(['auth', 'rol.publicista']);
+        $this->middleware(['auth']);
+        $this->middleware(['permission:crear-categorias'])->only('create', 'store');
+        $this->middleware(['permission:editar-categorias'])->only('edit', 'update');
+        $this->middleware(['permission:eliminar-categorias'])->only('destroy');
     }
 
     public function index() {
@@ -18,12 +21,10 @@ class CategoryController extends Controller{
     }
 
     public function create(){
-        // Retorna la vista para crear
         return view('dashboard.category.create', ['category'=>new Category()]);
     }
 
     public function store(RequestCategory $request){
-        // Crea la categoria en la base de datos
         $request->validated();
         Category::create(
             [
@@ -37,24 +38,15 @@ class CategoryController extends Controller{
     }
 
     public function show(Category $category){
-        // vista mostrar una categoria
         return view('dashboard.category.show', ["category"=> $category]);
     }
 
     public function edit(Category $category){
         // Se valida el rol del usuario y si es publicista se verifica si es autor de la categoria.
-        if(auth()->user()->rol_id==3){
-            $this->authorize('autor' ,$category);
-        }
-        // vista formulario editar
         return view('dashboard.category.edit', ['category'=>$category]);
     }
 
     public function update(RequestCategory $request, Category $category){
-        // edita en la base de datos
-        if(auth()->user()->rol_id==3){
-            $this->authorize('autor', $category);
-        }
         $category->name=$request->name;
         $category->description=$request->description;
         $request->validated();
@@ -63,11 +55,21 @@ class CategoryController extends Controller{
     }
 
     public function destroy(Category $category){
-        if(auth()->user()->rol_id==3){
-            $this->authorize('autor' ,$category);
-        }
+           /*
+           if(auth()->user()->email!=$category->user){
+             return back()->with('status', 'El rol publicista solo puede eliminar las propias categorias!'); 
+           }
+        */
         $category->delete();
         return back()->with('status', 'Categoria eliminada!');
     }
+
     // return response()->json($categorias, 200, []);
+    // php artisan cache:clear
+    // php artisan view:clear
+    // php artisan config:clear
+    // php artisan route:clear
+	// composer dump-autoload -o
+	// php artisan serve --host 0.0.0.0
+	// alt + shift + f : reorganizar sangrias
 }

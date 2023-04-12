@@ -9,9 +9,15 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller{
 
+    public function __construct() {
+        $this->middleware(['auth']);
+        $this->middleware(['permission:crear-publicaciones'])->only('create', 'store');
+        $this->middleware(['permission:editar-publicaciones'])->only('edit', 'update');
+        $this->middleware(['permission:eliminar-publicaciones'])->only('destroy');
+    }
+
     public function index() {
         $posts = Post::orderBy('created_at', 'desc')->paginate(5);
-        //$posts= Post::all();
         return view('dashboard.post.index', ['posts'=>$posts]);
     }
 
@@ -21,6 +27,9 @@ class PostController extends Controller{
     }
 
     public function store(StorePost $request){
+        if($request->category_id=='Elija una opcion'){
+            return back()->with('status', 'Elije una opción en las categorias!');
+        }
         Post::create($request->validated());
         $posts= Post::all();
         return view('dashboard.post.index', ['posts'=>$posts]);

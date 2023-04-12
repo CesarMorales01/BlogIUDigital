@@ -1,5 +1,4 @@
 @extends('dashboard.master')
-
 @section('content')
     @include('dashboard.partials.validation-error')
 
