@@ -30,6 +30,7 @@ class UserController extends Controller{
 
     public function store(Request $request) {
         $request->validate([
+            'name'=>'required',
             'password'=> 'required | min:6 | confirmed',
             'email'=> 'required | string | email | max:255 | unique:users'
         ]);
@@ -58,13 +59,14 @@ class UserController extends Controller{
     public function update(Request $request, User $user){
         $request->validate([
             'name'=> 'required | string | max:255',
-            'surname'=> 'required | string | max:255',
+            'password'=> 'required | min:6 | confirmed',
             'email'=> 'required | string | email | max:255'
         ]);
         $user->update([
             'name'=> $request['name'],
             'surname'=> $request['surname'],
-            'email'=> $request['email']
+            'email'=> $request['email'],
+            'password'=> Hash::make($request['password'])
         ]);
         $user->roles()->detach();
         $user->assignRole($request['role']);

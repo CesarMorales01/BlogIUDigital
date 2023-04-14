@@ -5,8 +5,8 @@
         <h4 class="centrar" style="margin-top: 0.5em">Lista de usuarios</h4>
         <br>
         @can('crear-usuarios')
-          <a href="{{ route('user.create')}}" class="btn btn-success">Registrar usuario</a>
-           <br>
+            <a href="{{ route('user.create')}}" class="btn btn-success">Registrar usuario</a>
+            <br>
         @endcan
         <br> 
         <table class="table table-hover">
@@ -30,7 +30,14 @@
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->surname }}</td>
                     <td>{{ $item->email }}</td>
-                    <td>{{ $item->getRoleNames()->first() }}</td>
+                    
+                    <td>
+                      @if (!@empty($item->getRoleNames()))
+                          @foreach ($item->getRoleNames() as $rolName)
+                             <span>{{ $rolName }}</span>
+                          @endforeach 
+                    @endif
+                    </td>
                     <td>{{ $item->created_at->format('d-m-Y') }}</td>
                     <td>{{ $item->updated_at->format('d-m-Y') }}</td>
                     <td> 

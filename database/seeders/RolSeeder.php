@@ -10,6 +10,7 @@ use Spatie\Permission\Models\Permission;
 class RolSeeder extends Seeder{
     
     public function run(): void{
+        $role = Role::create(['name' => 'super-admin']);
         $role1= Role::create(['name'=> 'Administrador']);
         $role2= Role::create(['name'=> 'Publicista']);
 
@@ -32,6 +33,7 @@ class RolSeeder extends Seeder{
         Permission::create(['name'=>'crear-publicaciones'])->syncRoles([$role1, $role2]);
         Permission::create(['name'=>'editar-publicaciones'])->syncRoles([$role1, $role2]);
         Permission::create(['name'=>'eliminar-publicaciones'])->syncRoles([$role1, $role2]);
+        $role->givePermissionTo(Permission::all());
 
        
         

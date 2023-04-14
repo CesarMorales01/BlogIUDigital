@@ -19,15 +19,18 @@
     </div>
 </div>
 
-@if ($pasw)
 <div class="row">
     <div class="form-group">
-        <label for="password">Password</label>
-        <input class="form-control" name="password" id="password" value="{{ old('password', $user->password) }}"/>
+        <label for="password">Contraseña</label>
+        <input class="form-control" name="password" id="password" />
     </div>
 </div> 
-@endif
-
+<div class="row">
+    <div class="form-group">
+        <label for="password">Repetir contraseña</label>
+        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+    </div>
+</div>
 
 <div class="row">
     <div class="form-group">

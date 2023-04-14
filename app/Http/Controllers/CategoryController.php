@@ -70,6 +70,6 @@ class CategoryController extends Controller{
     // php artisan config:clear
     // php artisan route:clear
 	// composer dump-autoload -o
-	// php artisan serve --host 0.0.0.0
-	// alt + shift + f : reorganizar sangrias
+	// php artisan serve --host 192.168.20.20
+	// npm run dev -- --host=192.168.20.20
 }

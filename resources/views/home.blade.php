@@ -20,6 +20,8 @@
                     @endif
                     <br>
                     Bienvenido al sistema {{ auth()->user()->name }}
+                    <br>
+                    Rol {{ auth()->user()->getRoleNames()->first() }}
                     <br><br>
                     {{ __('You are logged in!') }}
                     <br><br>
