@@ -11,6 +11,7 @@ class PostController extends Controller{
 
     public function __construct() {
         $this->middleware(['auth']);
+        $this->middleware(['permission:ver-publicaciones'])->only('index');
         $this->middleware(['permission:crear-publicaciones'])->only('create', 'store');
         $this->middleware(['permission:editar-publicaciones'])->only('edit', 'update');
         $this->middleware(['permission:eliminar-publicaciones'])->only('destroy');
