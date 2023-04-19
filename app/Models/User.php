@@ -13,12 +13,7 @@ use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable{
     use HasApiTokens, HasFactory, Notifiable;
     use HasRoles;
-       
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    
     protected $fillable = [
         'name',
         'surname',
@@ -26,11 +21,14 @@ class User extends Authenticatable{
         'password'
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
+    public function post(){
+        return $this->hasMany(Post::class);
+    }
+
+    public function category(){
+        return $this->hasMany(Category::class);
+    }
+
     protected $hidden = [
         'password',
         'remember_token',

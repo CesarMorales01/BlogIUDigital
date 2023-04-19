@@ -31,7 +31,7 @@ class CategoryController extends Controller{
             [
                 'name'=> $request['name'],
                 'description'=> $request['description'], 
-                'user'=> auth()->user()->email 
+                'user_id'=> auth()->user()->id 
             ]
         );
         $categorias= Category::all();
@@ -56,21 +56,11 @@ class CategoryController extends Controller{
     }
 
     public function destroy(Category $category){
-           /*
-           if(auth()->user()->email!=$category->user){
-             return back()->with('status', 'El rol publicista solo puede eliminar las propias categorias!'); 
-           }
-        */
-        $category->delete();
-        return back()->with('status', 'Categoria eliminada!');
+        if($category->user->id==Auth()->user()->id){
+            $category->delete();
+            return back()->with('status', 'Categoria eliminada!');
+        }else{
+            return back()->with('status', 'Solo el autor puede eliminar esta categoria!');
+        }
     }
-
-    // return response()->json($categorias, 200, []);
-    // php artisan cache:clear
-    // php artisan view:clear
-    // php artisan config:clear
-    // php artisan route:clear
-	// composer dump-autoload -o
-	// php artisan serve --host 192.168.20.20
-	// npm run dev -- --host=192.168.20.20
 }

@@ -6,6 +6,7 @@ use App\Http\Requests\StorePost;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller{
 
@@ -18,7 +19,7 @@ class PostController extends Controller{
     }
 
     public function index() {
-        $posts = Post::orderBy('created_at', 'desc')->paginate(5);
+        $posts = Post::all();
         return view('dashboard.post.index', ['posts'=>$posts]);
     }
 
@@ -31,7 +32,12 @@ class PostController extends Controller{
         if($request->category_id=='Elija una opcion'){
             return back()->with('status', 'Elije una opción en las categorias!');
         }
-        Post::create($request->validated());
+        Post::create([
+            'name'=>$request->name,
+            'description'=>$request->description,
+            'category_id'=>$request->category_id,
+            'user_id'=>auth()->user()->id
+        ]);
         $posts= Post::all();
         return view('dashboard.post.index', ['posts'=>$posts]);
     }
@@ -55,8 +61,12 @@ class PostController extends Controller{
     }
 
     public function destroy(Post $post){
-        $post->delete();
-        return back()->with('status', 'Publicación eliminada!');
+        if($post->user->id==Auth()->user()->id){
+            $post->delete();
+            return back()->with('status', 'Publicación eliminada!');
+        }else{
+            return back()->with('status', 'Solo el autor puede eliminar esta publicación!');
+        }
     }
 
 }

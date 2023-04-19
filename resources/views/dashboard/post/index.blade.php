@@ -14,6 +14,7 @@
                 <th scope="col">Titulo</th>
                 <th scope="col">Categoria</th>
                 <th scope="col">Description</th>
+                <th scope="col">Autor</th>
                 <th scope="col">Creación</th>
                 <th scope="col">Actualización</th>
                 <th scope="col">Acciones</th>
@@ -25,7 +26,12 @@
                     <th scope="row">{{ $item->id }}</th>
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->category->name }}</td>
-                    <td>{{ $item->description }}</td>
+                    <td>
+                      <textarea rows="3" cols="50" readonly>
+                        {{ $item->description }}
+                      </textarea>
+                    </td>
+                    <td>{{ $item->user->name }}</td>
                     <td>{{ $item->created_at }}</td>
                     <td>{{ $item->updated_at }}</td>
                     <td>

@@ -22,7 +22,7 @@
                   <tr>
                     <th scope="row">{{ $categoria->id }}</th>
                     <td>{{ $categoria->name }}</td>
-                    <td>{{ $categoria->user }}</td>
+                    <td>{{ $categoria->user->name }}</td>
                     <td>{{ $categoria->created_at }}</td>
                     <td>{{ $categoria->updated_at }}</td>
                     <td>
